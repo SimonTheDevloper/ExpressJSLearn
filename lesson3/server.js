@@ -38,6 +38,9 @@ app.get('/time', (req, res) => { // man bekommt die Date gesendet
     res.send(`Die jetzige Zeit ist ${now}`)
 });
 
-
+app.get('/random', (req, res) => {
+    const randomNumber = Math.floor(Math.random() * 100) + 1; // bekommt ne Zufällige Zahl gesendet
+    res.json({ ZufälligeZahl: randomNumber })
+})
 
 app.listen(PORT, () => console.log(`Server läuft auf Port ${PORT}`));
