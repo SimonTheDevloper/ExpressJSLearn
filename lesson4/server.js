@@ -50,11 +50,9 @@ app.get('/api/produkte/:id', (req, res) => {
     const produkt = produkte.find((produkte) => produkte.id === id)
 
     if (!produkt) {
-        res.status(404).json({ msg: `ein Produkt mit der ID ${id} exestiert nicht` })
+        return res.status(404).json({ msg: `ein Produkt mit der ID ${id} exestiert nicht` })
     }
-    else {
-        res.status(200).json(produkt)
-    }
+    res.status(200).json(produkt)
 });
 
 app.get('/api/produkte/', (req, res) => {
