@@ -35,10 +35,26 @@ app.get('/calculate', (req, res) => { // rechnet es da zB so /calculate?a=1&b=2
     res.send(summe)
 })
 
-// einen eizelelnen Post senden. Den ruft man da dann so auf: zB: /api/produkte/2
+
+/*
+// einen eizelelnen produkt senden. Den ruft man da dann so auf: zB: /api/produkte/2
 app.get('/api/produkte/:id', (req, res) => {
     const id = parseInt(req.params.id)
     res.json(produkte.filter((produkte) => produkte.id === id));
+});
+*/
+
+// einen eizelelnen produkt senden. Den ruft man da dann so auf: zB: /api/produkte/2
+app.get('/api/produkte/:id', (req, res) => {
+    const id = parseInt(req.params.id); // schickt jetzt ein error 404, wenn ein Produkt mit der eigetragenen id nicht exestiert
+    const produkt = produkte.find((produkte) => produkte.id === id)
+
+    if (!produkt) {
+        res.status(404).json({ msg: `ein Produkt mit der ID ${id} exestiert nicht` })
+    }
+    else {
+        res.status(200).json(produkt)
+    }
 });
 
 app.get('/api/produkte/', (req, res) => {
@@ -54,9 +70,9 @@ app.get('/api/produkte', (req, res) => {
     const limit = parseInt(req.query.limit) // bekommt das limit als eine Zahl
 
     if (!isNaN(limit && limit > 0)) // schaut das limit positv und eine Number ist
-        res.json(produkte.slice(0, limit)); // "schneidet" dann das JSON mit dem limit
+        res.status(200).json(produkte.slice(0, limit)); // "schneidet" dann das JSON mit dem limit
     else {
-        res.json(produkte)
+        res.status(200).json(produkte)
     }
 });
 
