@@ -42,7 +42,7 @@ app.get('/api/user', (req, res) => {
     res.status(200).json(user);
 });
 
-// mini To-Do app Projekt
+// __________________________________________________________________mini To-Do app Projekt ______________________________________________________________\\
 const todos = [
     { id: 1, text: 'Essen Kochen' },
 ];
@@ -63,5 +63,38 @@ app.post('/api/todo', (req, res) => { // neue Todo hinzufügen
 
     todos.push(newTodo)
     res.status(201).json({ msg: 'Neue Todo wurde erfolgreich hinzugefügt' })
-})
+});
+
+app.put('/api/todo/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const { text } = req.body;
+    console.log(text)
+
+
+    if (!id) {
+        return res.status(400).json({ msg: 'ID nicht angegeben' });
+    };
+    if (!text) {
+        return res.status(400).json({ msg: 'keinen Text angegeben' });
+    };
+
+    const todo = todos.find(t => t.id === id);
+
+    if (!todo) {
+        return res.status(400).json({ msg: 'Todo nicht gefunden!' })
+    }
+
+    todo.text = text; // todo text ändern
+
+    res.status(200).json({ msg: 'Todo erfolgreich aktualisiert!', todo });
+
+});
+
+app.delete('api/todo/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    if (!id) {
+        return res.status(400).json({ msg: 'ID nicht angegeben' });
+    };
+});
+
 app.listen(port, () => console.log(`Server läuft auf Port ${port}`));
