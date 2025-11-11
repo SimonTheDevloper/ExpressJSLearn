@@ -90,11 +90,21 @@ app.put('/api/todo/:id', (req, res) => {
 
 });
 
-app.delete('api/todo/:id', (req, res) => {
+app.delete('/api/todo/:id', (req, res) => {
     const id = parseInt(req.params.id);
     if (!id) {
         return res.status(400).json({ msg: 'ID nicht angegeben' });
     };
+
+    const index = todos.findIndex(t => t.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ msg: ` Todo mit der ID ${id} wurde nicht gefunden` })
+    }
+
+    const gelöschtesToDo = todos.splice(index, 1);
+
+    res.status(200).json({ msg: `Todo mit der ID ${id} wurde erfolgreich gelöscht.`, deleted: gelöschtesToDo })
 });
 
 app.listen(port, () => console.log(`Server läuft auf Port ${port}`));
